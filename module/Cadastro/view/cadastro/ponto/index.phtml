@@ -1,0 +1,52 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoPonto').addClass('active');
+	
+});
+
+</script>
+
+<?
+$title = 'Pontos';
+$this->headtitle($title);
+?>
+<h1><?=$this->escapehtml($title) ?></h1>
+<p>
+    <a href="<?=$this->url('ponto', array('action' => 'add')) ?>">
+        <button type="button" class="btn btn-primary">Novo Ponto</button></a>
+</p>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<?
+$form = $this->formPesquisa;
+$form->setAttribute('action', $this->urlPesquisa);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($form)?>
+<?=$this->form()->closeTag()?>
+
+    <br />
+<table class="full_table_list">
+  <tr>
+    <th>Código</th>
+    <th>Descrição</th>
+    <th>Agência</th>
+    <th>Rota</th>
+    <th>Ativo</th>
+    <th>Ação</th>
+  </tr>
+    <?=$this->partialLoop('cadastro/ponto/pontos.phtml', $this->paginator)?>
+</table>
+<p>
+    <?=$this->paginationControl($this->paginator, 'Sliding', 'pagination', array('route' => 'ponto')); ?>
+</p>

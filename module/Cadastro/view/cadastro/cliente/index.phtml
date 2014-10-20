@@ -1,0 +1,48 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoCliente').addClass('active');
+	
+});
+
+</script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+
+<p>
+    <a href="<?=$this->urlAdd?>">
+        <button type="button" class="btn btn-primary">Novo Cliente</button></a>
+</p>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<?
+$form = $this->formPesquisa;
+$form->setAttribute('action', $this->urlPesquisa);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($form)?>
+<?=$this->form()->closeTag()?>
+
+<br />
+<table class="full_table_list">
+<tr>
+    <th>Código</th>
+    <th>Razão Social</th>
+    <th>Ativo</th>
+    <th>Ação</th>
+</tr>
+<?=$this->partialLoop('cadastro/cliente/clientes.phtml', $this->paginator)?>
+</table>
+ <p>
+ <?=$this->paginationControl($this->paginator, 'Sliding', 'pagination', array('route' => 'cliente')); ?>
+</p>
+

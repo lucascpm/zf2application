@@ -1,0 +1,15 @@
+<? require_once 'vendor/pjb_etc/funcoes.php';
+$title = msgSis();
+$this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<p><?=$this->messages?></p>
+<?php 
+$form = $this->form;
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formcollection($form);
+echo $this->form()->closeTag($form);
+
+?>

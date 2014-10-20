@@ -1,0 +1,14 @@
+<tr>
+    <td><?=str_pad($model->codigo, 8, 0, STR_PAD_LEFT)?></td>
+    <td><?=$this->escapehtml($model->nome) ?></td>
+    <td><?=str_pad($model->senha, 4, 0, STR_PAD_LEFT) ?></td>
+    <td><?=$this->escapehtml($model->ponto->nome) ?></td>
+    <td><?=$model->ativo == 1? 'Sim' : 'Não' ?></td>
+    <!--<td><?=$this->escapehtml($model->terminal->serial) ?></td> Definir Terminal para Operador-->
+    <td>
+        <div align="center">
+            <a href="<?=$this->url('operador', array('action'=>'edit', 'key'=>$model->id)) ?>"><input name="submit" type="submit" value="Editar"></a>
+            <a href="<?=$this->url('operador', array('action'=>'delete', 'key'=>$model->id)) ?>"><input name="submit" type="submit" value="Excluir"></a>
+        </div>
+    </td>
+</tr>

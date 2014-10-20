@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    $(function() {
+        $('#opcaoLogin').addClass('active');
+
+        //    Ativando componente Datepicker do JQueryUI
+        $( "#data" ).datepicker();
+
+    });
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        var proxMsg     = '';
+        var nSerial     = '';
+        var proxNumPule = '';
+
+        var worker = new SharedWorker("<?=$this->basePath()?>/public/js/WebWorker2.js");
+        // call start before posting
+        worker.port.start();
+
+        // post a message to the shared web worker
+        worker.port.postMessage("novoWebSocket");
+
+
+        // e.data é a resposta do Worker (resposta do servidor)
+        worker.port.addEventListener("message", function(e) {
+            document.getElementById("response").innerHTML = "Mensagem do Sevidor: " + e.data;
+
+            if( e.data.indexOf("proxMsg") == 0 ){
+                proxMsg = e.data;
+                alert("Salvei porxMsg!");
+                return;
+            }else
+            if( e.data.indexOf("nSerial") == 0 ){
+                nSerial = e.data;
+                alert("Salvei serial!");
+                return;
+            }else
+            if( e.data.indexOf("proxNumPule") == 0 ){
+                proxNumPule = e.data;
+                alert("Salvei prox num pule!");
+
+                alert("Logado com sucesso!");
+                myWindow = window.open("novojogo", "_blank", "width=50, height=50");
+                sleep(2000);
+//                myWindow = window.open("novojogo");
+                location.href="../jogar/novojogo";
+//                    window.open("novojogo?data1=123&data2=456");
+                return;
+            }else{
+                document.getElementById("response").innerHTML = e.data;
+                return;
+            }
+
+        }, false);
+
+        //Ao aclicar no botão:
+        $('#login').click(function(){ //use clicks message send button
+            var numTerminal = $('#numTerminal').val(); //get message text
+            var operadorCod = $('#operadorCod').val(); //get message text
+            var operadorSenha = $('#operadorSenha').val(); //get message text
+
+            if(numTerminal == "" || operadorCod == "" || operadorSenha == ""){ //emtpy message?
+                alert("Preencha Todos os Campos!");
+                return;
+            }
+
+            //prepare json data
+            var msg =  "l;" + numTerminal + ";" + operadorCod + ";" + operadorSenha;
+
+            alert(msg);
+            //Aqui vou passar a mensagem já montada para o Worker (ex.: l;numTerminal;operadorCod;operadorSenha)
+            worker.port.postMessage(msg);
+        });
+
+    }, false);
+
+
+</script>
+
+<!--Datepicker do JQueryUI-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+<p id="response">
+    Resposta do Servidor:
+</p>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->urlAction);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($this->form)?>
+<?=$this->form()->closeTag()?>
+
+</p>

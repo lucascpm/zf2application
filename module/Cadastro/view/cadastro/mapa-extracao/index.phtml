@@ -1,0 +1,48 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoMapaExtracao').addClass('active');
+	
+});
+
+</script>
+
+<?
+$title = 'Extrações';
+$this->headtitle($title);
+?>
+<h1><?=$this->escapehtml($title) ?></h1>
+<p>
+	<a href="<?=$this->url('mapaextracao', array('action' => 'add')) ?>">Novo Mapa de Extração</a>
+</p>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<table class="table">
+  <tr>
+    <th>Código</th>
+    <th>Descricao</th>
+    <th>Horário</th>
+    <th>Operações</th>
+  </tr>
+  <? foreach ($this->models as $extracao): ?>
+  <tr>
+    <td><?=$extracao->codigo ?></td>
+    <td><?=$this->escapehtml($extracao->descricao) ?></td>
+    <td><?=$this->escapehtml($extracao->horario) ?></td>
+    <td>
+    	<a href="<?=$this->url('mapaextracao', array('action'=>'edit', 'key'=>$extracao->codigo)) ?>">Editar</a>
+    
+    	<a href="<?=$this->url('mapaextracao', array('action'=>'delete', 'key'=>$extracao->codigo)) ?>">Excluir</a>
+    </td>
+  </tr>
+  <? endforeach; ?>
+</table>
+

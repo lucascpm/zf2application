@@ -1,0 +1,90 @@
+
+<?php require_once 'public/menuJogar.phtml';?>
+
+<script type="text/javascript">
+    $(function() {
+        $('#opcaoJogar').addClass('active');
+        $('#opcaoNovoJogo').addClass('active');
+
+    });
+
+</script>
+<script src="<?=$this->basepath('public/js/funcoes.js') ?>"></script>
+<script src="<?=$this->basepath('public/js/jquery.min.js') ?>"></script>
+
+
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+<!--<h5>--><?php //var_dump($this->extracoes)?><!--</h5>-->
+<?php
+//    $listaExtracoes = '';
+//    foreach($this->extracoes as $extracao){
+//    $listaExtracoes .= $extracao->nome.";";
+//    }
+//    print_r(explode(";",$listaExtracoes));
+//?>
+
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->urlAction);
+    $form->prepare();
+    ?>
+    <?=$this->form()->openTag($form)?>
+<table>
+    <tr>
+        <td>Número da pule: </td><td><label id="numPule">0001</label></td>
+    </tr>
+    <tr>
+        <td>Extração: </td><td><?=$this->formElement($form->get('extracao'))?></td>
+    </tr>
+    <tr>
+        <td>Tipo de Jogo: </td><td><?=$this->formElement($form->get('tipojogo'))?></td>
+    </tr>
+</table>
+<hr>
+<table>
+    <tr>
+        <td><label id="siglajogos">MC</label></td><td><?=$this->formElement($form->get('jogos'))?></td>
+    </tr>
+    <tr>
+        <td>Quantidade de jogos: </td><td><?=$this->formElement($form->get('qtd'))?></td>
+    </tr>
+    <tr>
+        <td>Prêmio: </td><td><?=$this->formElement($form->get('premioini'))?></td>
+        <!--<td>/</td><td><?=$this->formElement($form->get('premiofim'))?></td>-->
+    </tr>
+    <tr>
+        <td>Valor de Jogo: </td><td><?=$this->formElement($form->get('valorjogo'))?></td>
+    </tr>
+    <table class="full_table_list" style="width: 100%; background-color: #176092">
+        <tr>
+            <td>Pule</td>
+            <td>Extração</td>
+            <td>Tipo de Jogo</td>
+            <td>Qtd. Jogos</td>
+            <td>Prêmio</td>
+            <td>Valor Jogo</td>
+            <td>Valor Total</td>
+            <td>Excluir</td>
+        </tr>
+        <tr class="linhapule">
+            <td><label id="pule_0"></label></td>
+            <td><label id="extracao_0"></label></td>
+            <td><label id="tipojogo_0">MC</label></td>
+            <td><label id="qtd_0">1</label></td>
+            <td><label id="premio_0">1/10</label></td>
+            <td><label id="valorjogo_0">20,00</label></td>
+            <td><label id="valortotal_0">400,00</label></td>
+            <td class="excluir">x</td>
+        </tr>
+    </table>
+</table>
+<div style="float: right"><?=$this->formElement($form->get('imprimir'))?></div>
+<!--<?=$this->formCollection($this->form)?>-->
+<!--<div><textarea id="hidden"></textarea></div>-->
+<?=$this->form()->closeTag()?>
+
+
+</p>

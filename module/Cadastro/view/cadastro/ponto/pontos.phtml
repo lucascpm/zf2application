@@ -1,0 +1,14 @@
+<tr>
+    <td><?=str_pad($this->model->codigo, 6, 0, STR_PAD_LEFT)?></td>
+    <td><?=$this->escapehtml($model->nome) ?></td>
+    <td><?=$this->escapehtml($model->rota->agencia->nome) ?></td>
+    <td><?=$this->escapehtml($model->rota->nome) ?></td>
+    <td><?=$model->ativo == 1? 'Sim' : 'Não' ?></td>
+    <td>
+        <div align="center">
+            <a href="<?=$this->url('ponto', array('action'=>'edit', 'key'=>$model->id)) ?>"><input name="submit" size="30px" type="submit" value="Editar"></a>
+            <a href="<?=$this->url('ponto', array('action'=>'delete', 'key'=>$model->id)) ?>"><input name="submit" type="submit" value="Excluir"></a>
+        </div>
+    </td>
+</tr>
+

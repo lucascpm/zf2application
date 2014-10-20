@@ -1,0 +1,34 @@
+<!-- Top Menu -->
+<?php require_once 'vendor/pjb_etc/funcoes.php'; ?>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <div class="nav-collapse collapse">
+        <div class="pull-right">
+            <a class="brand" href="<?= $this->basePath()?>"><?=msgEmp().' - '. nomeUsuarioLogado()?></a>
+            
+        </div>
+        <ul class="nav">
+            <li id="opcaoLogin">
+                <a href="<?= $this->basePath()?>/jogar/login">Login</a>
+            </li>
+          <li id="opcaoInicio">
+            <a href="<?= $this->basePath()?>/application/index/menu">Início</a>
+          </li>
+          <li id="opcaoJogar">
+            <a href="<?= $this->basePath()?>/jogar/novojogo">Jogar</a>
+          </li>
+          <li id="opcaoCancelarJogo">
+            <a href="<?= $this->basePath()?>/jogar/cancelarjogo">Cancelar Jogo</a>
+          </li>
+          <li id="opcaoRelatorios">
+            <a href="<?= $this->basePath()?>/relatorio/parcialdohorario">Relatórios</a>
+          </li>
+          <li id="opcaoFuncoes">
+            <a href="<?= $this->basePath()?>/funcoes/trocarsenha">Funções</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

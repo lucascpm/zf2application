@@ -1,0 +1,19 @@
+<tr>
+    <td><?=$this->escapeHtml($this->model->nome)?></td>
+    <td><div align="center"><?=$this->model->horario->format('H:i')?> </div></td>
+    <td><div align="center"><?=$model->corre_descarga == 1? 'Sim' : 'Não' ?></div></td>
+    <td><div align="center"><?=isset($model->hora_bloqueio) ? $model->hora_bloqueio->format('H:i') : '--' ?></div></td>
+    <td><div align="center"><?=$model->dom? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->seg? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->ter? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->qua? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->qui? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->sex? 'S' : 'N' ?></div></td>
+    <td><div align="center"><?=$model->sab? 'S' : 'N' ?></div></td>
+    <td>
+        <div align="center">
+            <a href="<?=$this->placeholder('url')->edit . '/'. $this->model->id?>"><input type="submit" value="Editar"/></a>
+            <a href="<?=$this->placeholder('url')->delete . '/'. $this->model->id?>"><input type="submit" value="Remover"/></a>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,32 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoPule').addClass('active');
+
+    $(".alert").delay(900).fadeOut();
+});
+</script>
+
+<?
+$title = 'Incluir nova Aposta';
+$this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<?
+$form = $this->form;
+$form->setAttribute('action', $this->urlAction);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($form)?>
+<?=$this->form()->closeTag()?>

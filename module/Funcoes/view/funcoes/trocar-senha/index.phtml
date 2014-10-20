@@ -1,0 +1,37 @@
+
+<?php require_once 'public/menuFuncoes.phtml';?>
+
+<script type="text/javascript">
+    <!--
+
+    //-->
+    $(function() {
+        $('#opcaoFuncoes').addClass('active');
+        $('#opcaoTrocarSenha').addClass('active');
+
+        //    Ativando componente Datepicker do JQueryUI
+        $( "#data" ).datepicker();
+
+    });
+
+</script>
+
+<!--Datepicker do JQueryUI-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+    <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->urlAction);
+        $form->prepare();
+    ?>
+    <?=$this->form()->openTag($form)?>
+    <?=$this->formCollection($this->form)?>
+    <?=$this->form()->closeTag()?>
+
+</p>

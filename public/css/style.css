@@ -1,0 +1,137 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.zf-green {
+    color: #bfbfbf;
+}
+
+.btn-success {
+  background-color: #57a900;
+  background-image: -moz-linear-gradient(top, #70d900, #57a900);
+  background-image: -ms-linear-gradient(top, #70d900, #57a900);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+  background-image: -o-linear-gradient(top, #70d900, #57a900);
+  background-image: linear-gradient(top, #70d900, #57a900);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #57a900;
+}
+div.menu-principal{
+    margin: 3000px;
+}
+.btn-success:active, .btn-success.active {
+  background-color: #121212;
+}
+
+/* Tabela Gerada pelo pdf */
+table.pdf{
+    width: 100%;
+    border-spacing: 0px;
+
+    white-space: normal;
+    line-height: normal;
+    font-weight: normal;
+    font-variant: normal;
+    font-style: normal;
+    text-align: start;
+
+    display: table;
+    border-collapse: separate;
+    border-color: gray;
+}
+
+table.pdf tbody tr:nth-child(even){
+    background-color: #dddddd;
+}
+
+table.pdf tr td{
+    text-align: right;
+    margin: 0px;
+    padding: 2px;
+}
+
+table.pdf th{
+    font-size: 12px;
+    border-bottom: 1px solid black;
+    margin: 0px;
+    text-align: right;
+}
+
+div.pdf h1{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #dddddd;
+    font-size: 20px;
+    margin: 0px;
+
+}
+
+div.boletim p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+div.boletim p#boletim {
+    font-family: Verdana;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+div.boletim table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Verdana;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+div.boletim table th#top{
+    border-bottom: 1px solid #000000;
+}
+
+div.boletim table th#bottom{
+    border-top: 1px solid #000000;
+}
+
+.negrito{
+    font-weight: bold;
+}
+
+.bordaBottom {
+    border-bottom: 1px solid;
+    margin-bottom: 5px;
+}
+
+.notMarginTop {
+    margin-top: 5px;
+}
+
+div.container a.brand {
+    background: url("../images/zf2-logo.png") no-repeat scroll 0 10px transparent;
+    margin-left: 0;
+    padding: 8px 20px 12px 40px;
+}
+
+/* Relatório Apostas */
+span#ap {
+    font-weight: bold;
+}
+
+h4#ap{
+    font-weight: 100;
+}
+
+
+div.container {
+  background-color: #bbb
+    
+}

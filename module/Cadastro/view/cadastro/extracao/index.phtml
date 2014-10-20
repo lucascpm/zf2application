@@ -1,0 +1,48 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoExtracao').addClass('active');
+	
+});
+
+</script>
+
+<?
+$title = 'Extrações';
+$this->headtitle($title);
+?>
+<h1><?=$this->escapehtml($title) ?></h1>
+<p>
+	<a href="<?=$this->urlAdd?>">
+        <button type="button" class="btn btn-primary">Nova Extração</button></a>
+</p>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<table class="full_table_list">
+    <tr>
+        <th>Descrição</th>
+        <th>Horário</th>
+        <th>Corre Descarga</th>
+        <th>Hora Bloqueio</th>
+        <th>DOM</th>
+        <th>SEG</th>
+        <th>TER</th>
+        <th>QUA</th>
+        <th>QUI</th>
+        <th>SEX</th>
+        <th>SAB</th>
+        <th>Ação</th>
+    </tr>
+  <?=$this->partialLoop('cadastro/extracao/extracoes.phtml', $this->paginator)?>
+</table>
+<p>
+    <?=$this->paginationControl($this->paginator, 'Sliding', 'pagination', array('route' => 'extracao')); ?>
+</p>

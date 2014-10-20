@@ -1,0 +1,11 @@
+<tr>
+<td><?=str_pad($this->model->id,6, 0, STR_PAD_LEFT)?></td>
+    <td><?=$this->escapeHtml($this->model->razao_social)?></td>
+    <td><div align="center"> <?=$model->ativo == 1 ? 'Sim' : 'Não' ?></div></td>
+    <td>
+        <div align="center">
+            <a href="<?=$this->placeholder('url')->edit . '/'. $this->model->id?>"><input name="submit" type="submit" value="Editar" /></a>
+            <a href="<?=$this->placeholder('url')->delete . '/'. $this->model->id?>"><input name="submit" type="submit" value="Remover" /></a>
+        </div>
+    </td>
+</tr>

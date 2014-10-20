@@ -1,0 +1,25 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoTerminal').addClass('active');
+	
+});
+
+</script>
+<h1><?=$this->escapeHtml($this->title)?></h1>
+<?
+$form = $this->form;
+$form->setAttribute('action', $this->urlAction);
+$form->prepare();
+?>
+<div alig="center">
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($this->form)?>
+<?=$this->form()->closeTag()?>
+</div>

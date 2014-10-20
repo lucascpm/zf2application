@@ -1,0 +1,56 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoPule').addClass('active');
+	
+});
+
+</script>
+
+<?
+$title = 'Pules';
+$this->headtitle($title);
+?>
+<h1><?=$this->escapehtml($title) ?></h1>
+<p>
+	<a href="<?=$this->url('pule', array('action' => 'add')) ?>"><input name="submit" type="submit" id="btn_form" value="Nova Pule"></a>
+</p>
+
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<table class="full_table_list">
+  <tr>
+    <th>Número</th>
+    <th>Terminal</th>
+    <th>Ponto</th>
+    <th>Operador</th>
+    <th>Data</th>
+    <th>Data ExProg</th>
+    <th>Apostas</th>
+    <th>Ação</th>
+  </tr>
+  <? foreach ($this->pules as $pule): ?>
+  <tr>
+    <td><?=str_pad($pule->numero, 8, 0, STR_PAD_LEFT) ?></td>
+    <td><?=$pule->terminal->serial ?></td>
+    <td><?=$pule->ponto->nome ?></td>
+    <td><?=$pule->operador->nome ?></td>
+    <td><?=$pule->data_hora->format('d-m-Y H:i') ?></td>
+    <td><?=$pule->extracaoProgramada->data_extracao->format('d-m-Y') ?></td>
+    <td><?$qnt = (count($pule->apostas) ); echo $qnt ? "Com $qnt Apostas":'Sem Apostas' ?></td>
+    <td>
+    	<a href="<?=$this->url('pule', array('action'=>'edit', 'key'=>$pule->id)) ?>"><input name="submit" type="submit" value="Editar"></a>
+        <a href="<?=$this->url('pule', array('action' => 'addAposta', 'key'=>$pule->id)) ?>"><input name="submit" type="submit" value="Nova Aposta"></a>
+    </td>
+  </tr>
+  <? endforeach; ?>
+</table>
+

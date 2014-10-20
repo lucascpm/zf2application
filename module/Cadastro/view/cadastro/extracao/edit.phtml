@@ -1,0 +1,25 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoExtracao').addClass('active');
+	
+});
+
+</script>
+<?
+$title = 'Alterar Extração';
+//$this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->urlAction);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($form)?>
+<?=$this->form()->closeTag()?>

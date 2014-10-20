@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    $(function() {
+        $('#opcaoInicio').addClass('active');
+    });
+</script>
+
+<?php
+    if( isset($title) ) : ?>
+        <? $this->headTitle($title); ?>
+        <h1><?=$this->escapeHtml($title)?></h1>
+    <? endif ?>
+<h1>
+	Bem Vindo <?=$this->usuario->login?>!
+</h1>
+

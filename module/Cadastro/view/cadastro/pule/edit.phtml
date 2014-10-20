@@ -1,0 +1,27 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoAgencia').addClass('active');
+	
+});
+</script>
+
+<?
+$title = 'Alterar Pule';
+$this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<?
+$form = $this->form;
+$form->setAttribute('action', $this->url('pule', array('action' => 'edit', 'codigo' => $form->get('codigo')->getValue())));
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($this->form)?>
+<?=$this->form()->closeTag()?>

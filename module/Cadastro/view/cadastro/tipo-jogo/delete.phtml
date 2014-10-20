@@ -1,0 +1,27 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoTipoJogo').addClass('active');
+	
+});
+
+</script>
+<?
+$title = "Remover Tipo de Jogo '".str_pad($this->model->codigo,4, 0, STR_PAD_LEFT).'-'.$this->model->nome."'?";
+$this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<?
+$form = $this->form; 
+$form->setAttribute('action', $this->urlAction);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($this->form)?>
+<?=$this->form()->closeTag()?>

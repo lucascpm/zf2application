@@ -1,0 +1,11 @@
+<tr>
+    <td><?=$this->escapehtml($model ->serial) ?></td>
+    <td><?=$this->escapehtml($model->versao) ?></td>
+    <td><?=$model->ativo == 1? 'Sim' : 'Não' ?></td>
+    <td><?=isset($model->data_criacao)?$this->escapehtml($model->data_criacao->format('Y-m-d H:i:s')): '--'?></td>
+    <td><?=isset($model->ultima_autenticacao)?$this->escapehtml($model->ultima_autenticacao->format('Y-m-d H:i:s')) : '--' ?></td>
+    <td>
+        <a href="<?=$this->url('terminal', array('action'=>'edit', 'key'=>$model->id)) ?>"><input name="submit" type="submit" value="Editar"></a>
+        <a href="<?=$this->url('terminal', array('action'=>'delete', 'key'=>$model->id)) ?>"><input name="submit" type="submit" value="Excluir"></a>
+    </td>
+</tr>

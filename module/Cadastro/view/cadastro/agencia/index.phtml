@@ -1,0 +1,40 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoAgencia').addClass('active');
+	
+});
+
+</script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+
+<p>
+    <a href="<?=$this->urlAdd?>"><button type="button" class="btn btn-primary">Nova Agência</button></a>
+</p>
+<br />
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<table class="full_table_list">
+<tr>
+    <th>Código</th>
+    <th>Nome</th>
+    <th>Valor Bancado</th>
+    <th>Descarga</th>
+    <th>Ação</th>
+</tr>
+<?=$this->partialLoop('cadastro/agencia/agencias.phtml', $this->paginator)?>
+</table>
+
+<p>
+ <?=$this->paginationControl($this->paginator, 'Sliding', 'pagination', array('route' => 'agencia')); ?>
+</p>
+

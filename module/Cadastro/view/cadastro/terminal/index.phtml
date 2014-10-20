@@ -1,0 +1,54 @@
+
+<?php require_once 'public/menuCadastro.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoCadastro').addClass('active');
+	$('#opcaoTerminal').addClass('active');
+	
+});
+
+</script>
+
+<?
+$title = 'Terminais';
+$this->headtitle($title);
+?>
+<h1><?=$this->escapehtml($title) ?></h1>
+<p>
+    
+	<a href="<?=$this->url('terminal', array('action' => 'add')) ?>">
+        <button type="button" class="btn btn-primary">Novo Terminal</button>
+	</a>
+</p>
+
+<?=$this->flashMessenger()->render('success', array('alert', 'alert-success'));?>
+<?=$this->flashMessenger()->render('error', array('alert', 'alert-danger'));?>
+
+<?php
+$form = $this->formPesquisa;
+$form->setAttribute('action', $this->urlPesquisa);
+$form->prepare();
+?>
+<?=$this->form()->openTag($form)?>
+<?=$this->formCollection($form)?>
+<?=$this->form()->closeTag()?>
+
+    <br />
+<table class="full_table_list">
+  <tr>
+    <th>Serial</th>
+    <th>Versao</th>
+    <th>Ativo</th>
+    <th>Data Criação</th>
+    <th>Última Autenticação</th>
+    <th>Ação</th>
+  </tr>
+    <?=$this->partialLoop('cadastro/terminal/terminais.phtml', $this->paginator)?>
+</table>
+<p>
+    <?=$this->paginationControl($this->paginator, 'Sliding', 'pagination', array('route' => 'terminal')); ?>
+</p>

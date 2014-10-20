@@ -1,0 +1,33 @@
+<div align="center"
+
+<? if ($this->pageCount): ?>
+<div class="paginationControl">
+<? if (isset($this->previous)): ?>
+  <a href="<? echo $this->url($this->route, array('page' => $this->previous)); ?>">
+    &lt; Anterior
+  </a> |
+<? else: ?>
+  <span class="disabled">&lt; Anterior</span> |
+<? endif; ?>
+
+<? foreach ($this->pagesInRange as $page): ?>
+  <? if ($page != $this->current): ?>
+    <a href="<? echo $this->url($this->route, array('page' => $page)); ?>">
+        <? echo $page; ?>
+    </a> |
+  <? else: ?>
+    <? echo $page; ?> |
+  <? endif; ?>
+<? endforeach; ?>
+
+<? if (isset($this->next)): ?>
+  <a href="<? echo $this->url($this->route, array('page' => $this->next)); ?>">
+    Próximo &gt;
+  </a>
+<? else: ?>
+  <span class="disabled">Próximo &gt;</span>
+<? endif; ?>
+</div>
+<? endif; ?>
+
+</div>

@@ -1,0 +1,148 @@
+
+<?php require_once 'public/menuJogar.phtml';?>
+
+<script type="text/javascript">
+<!--
+
+//-->
+$(function() {
+	$('#opcaoJogar').addClass('active');
+	$('#opcaoNovoJogo').addClass('active');
+
+    //    Ativando componente Datepicker do JQueryUI
+    $( "#data" ).datepicker();
+	
+});
+
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function(){
+
+        //prepare json data
+        var extracoes = {
+            message: "listaextracao;"
+        };
+        websocket.send(JSON.stringify(extracoes));
+
+        //prepare json data
+//        var agencias = {
+//            message: "listaagencia;"
+//        };
+//        websocket.send(JSON.stringify(agencias));
+
+
+        $('#jogar').click(function(){ //use clicks message send button
+            var numePule = $('#numPule').val(); //get message text
+            var extracao = $('#extracao').val(); //get message text
+            var agencia = $('#agencia').val(); //get message text
+
+            if(numePule == "" || extracao == "" || agencia == ""){ //emtpy message?
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            //prepare json data
+            var msg = {
+                message: mymessage
+            };
+            //convert and send data to server
+            websocket.send(JSON.stringify(msg));
+        });
+
+        $('#disc').click(function(){ //use clicks
+            $('#message_box').append("<div class=\"system_error\">Client Disconnected </div>");
+            websocket.close();
+        });
+
+        //#### Message received from server?
+        websocket.onmessage = function(ev) {
+            var msg = JSON.parse(ev.data); //PHP sends Json data
+
+            var erro = msg.erro;    //message type
+            var umsg = msg.message; //message text
+            var type = msg.type;
+
+            //Msg automática para pedir ao servidor as Extrações
+            if(type == "extracoes"){
+                if(erro == true)
+                {
+                    alert(umsg);
+                    return;
+                } else if(erro === false){
+                    //TODO aqui vou receber string extracao1;extracao2;extracaoN. Explodir e colocar no SELECT de extrações
+                    //umsg;
+                    alert(umsg);
+                }
+
+            }
+
+            //Msg automática para pedir ao servidor as Agências
+            if(type == "agencias"){
+                //TODO aqui vou receber string agencia1;agencia2;agenciaN. Explodir e colocar no SELECT de agências
+                //umsg;
+                alert(umsg);
+
+                if(erro == true)
+                {
+                    alert("Ocorreu algum erro com as Agências.");
+                    return;
+                } else if(erro === false){
+                    //TODO aqui vou receber string extracao1;extracao2;extracaoN. Explodir e colocar no SELECT de extrações
+                    //umsg;
+                    alert("Extracoes recebidas");
+                }
+            }
+
+            //Msg do usuário
+            if(type == "usermsg"){
+                alert("Msg do usuário recebida");
+
+                if(erro == true)
+                {
+                    alert("Ocorreu algum erro.");
+                    return;
+                } else if(erro === false){
+                    //TODO aqui vou receber string extracao1;extracao2;extracaoN. Explodir e colocar no SELECT de extrações
+                    //umsg;
+                    alert("No errors");
+                }
+            }
+
+        };
+
+
+        websocket.onerror	= function(ev){alert("Ocorreu algum erro.");};
+        websocket.onclose 	= function(ev){alert("Conexão encerrada.");};
+    });
+</script>
+
+<!--Datepicker do JQueryUI-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+<!--<h5>--><?php //var_dump($this->extracoes)?><!--</h5>-->
+<?php
+//    $listaExtracoes = '';
+//    foreach($this->extracoes as $extracao){
+//    $listaExtracoes .= $extracao->nome.";";
+//    }
+//    print_r(explode(";",$listaExtracoes));
+//?>
+
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+    <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->urlAction);
+        $form->prepare();
+    ?>
+    <?=$this->form()->openTag($form)?>
+    <?=$this->formCollection($this->form)?>
+    <?=$this->form()->closeTag()?>
+
+</p>

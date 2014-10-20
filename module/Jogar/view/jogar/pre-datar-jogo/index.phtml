@@ -1,0 +1,95 @@
+<?php require_once 'public/menuJogar.phtml';?>
+
+<script src="<?=$this->basepath('public/js/funcoes.js') ?>"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="<?=$this->basepath('public/js/jogar.js') ?>"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $('#opcaoJogar').addClass('active');
+        $('#opcaoPreDatarJogo').addClass('active');
+
+        //    Ativando componente Datepicker do JQueryUI
+        $("#data").datepicker();
+
+    });
+
+</script>
+
+<!--Datepicker do JQueryUI-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+<p id="response"> </p>
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+    <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->urlAction);
+        $form->prepare();
+    ?>
+    <?=$this->form()->openTag($form)?>
+<!--    --><?//=$this->formCollection($this->form)?>
+
+    <table>
+
+    <tr>
+        <td>Saldo: </td><td><?=$this->formElement($form->get('saldo'))?></td>
+    </tr>
+    <tr>
+        <td>Data: </td><td><?=$this->formElement($form->get('data'))?></td>
+    </tr>
+    <tr>
+        <td>Número da pule: </td><td><label id="numPule">0001</label></td>
+    </tr>
+    <tr>
+        <td>Extração: </td><td><?=$this->formElement($form->get('extracao'))?></td>
+    </tr>
+        <tr>
+            <td>Tipo de Jogo: </td><td><?=$this->formElement($form->get('tipojogo'))?></td>
+        </tr>
+    </table>
+    <hr>
+    <table>
+        <tr>
+            <td><label id="siglajogos">MC</label></td><td><?=$this->formElement($form->get('jogos'))?></td>
+        </tr>
+        <tr>
+            <td>Quantidade de jogos: </td><td><?=$this->formElement($form->get('qtd'))?></td>
+        </tr>
+        <tr>
+            <td>Prêmio: </td><td><?=$this->formElement($form->get('premioini'))?></td><td>/</td><td><?=$this->formElement($form->get('premiofim'))?></td>
+        </tr>
+        <tr>
+            <td>Valor de Jogo: </td><td><?=$this->formElement($form->get('valorjogo'))?></td>
+        </tr>
+        <table class="full_table_list" style="width: 100%; background-color: #176092">
+            <tr>
+                <td>Pule</td>
+                <td>Extração</td>
+                <td>Tipo de Jogo</td>
+                <td>Qtd. Jogos</td>
+                <td>Prêmio</td>
+                <td>Valor Jogo</td>
+                <td>Valor Total</td>
+                <td>Excluir</td>
+            </tr>
+            <tr>
+                <td><label id="pule_0"></label></td>
+                <td><label id="extracao_0"></label></td>
+                <td><label id="tipojogo_0">MC</label></td>
+                <td><label id="qtd_0">1</label></td>
+                <td><label id="premio_0">1/10</label></td>
+                <td><label id="valorjogo_0">2000</label></td>
+                <td><label id="valortotal_0">40000</label></td>
+                <td>x</td>
+            </tr>
+        </table>
+    </table>
+
+    <br>
+<?=$this->formElement($form->get('jogar'))?>
+<?=$this->form()->closeTag()?>

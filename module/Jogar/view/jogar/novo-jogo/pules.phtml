@@ -1,0 +1,12 @@
+<tr>
+<td><?=str_pad($this->model->codigo,2,'0',STR_PAD_LEFT)?></td>
+    <td><?=$this->escapeHtml($this->model->nome)?></td>
+    <td><?='R$ '.number_format($this->model->valor_bancado, 2, ',', '.')?></td>
+    <td><?='R$ '.number_format($this->model->descarga, 2, ',', '.')?></td>
+    <td>
+        <div align="center">
+        <a href="<?=$this->placeholder('url')->edit . '/'. $this->model->id?>"><input name="submit" type="submit" value="Editar" /></a>
+        <a href="<?=$this->placeholder('url')->delete . '/'. $this->model->id?>"><input name="submit" type="submit" value="Remover"/></a>
+        </div>
+    </td>
+</tr>

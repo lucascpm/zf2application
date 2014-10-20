@@ -1,0 +1,97 @@
+<script type="text/javascript">
+    <!--
+
+    //-->
+    $(function() {
+        $('#opcaoLogin').addClass('active');
+
+        //    Ativando componente Datepicker do JQueryUI
+        $( "#data" ).datepicker();
+
+    });
+
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function(){
+        //create a new WebSocket object.
+        var wsUri = "ws://localhost:10000/server.php";
+        websocket = new WebSocket(wsUri);
+
+        websocket.onopen = function(ev) { // connection is open
+            alert("Conexão com o WebSocket Estabelecida com Sucesso!");
+        }
+
+        $('#login').click(function(){ //use clicks message send button
+            var numTerminal = $('#numTerminal').val(); //get message text
+            var operadorCod = $('#operadorCod').val(); //get message text
+            var operadorSenha = $('#operadorSenha').val(); //get message text
+
+            if(numTerminal == "" || operadorCod == "" || operadorSenha == ""){ //emtpy message?
+                alert("Preencha Todos os Campos!");
+                return;
+            }
+
+//prepare json data
+            var msg = {
+                message: "l;" + numTerminal + ";" + operadorCod + ";" + operadorSenha
+            };
+
+//convert and send data to server
+            websocket.send(JSON.stringify(msg));
+        });
+
+        $('#disc').click(function(){ //use clicks
+            $('#message_box').append("<div class=\"system_error\">Client Disconnected </div>");
+            websocket.close();
+        });
+
+        //#### Message received from server?
+        websocket.onmessage = function(ev) {
+            var msg = JSON.parse(ev.data); //PHP sends Json data
+
+            var erro = msg.erro;    //message type
+            var umsg = msg.message; //message text
+
+            if(erro == true)
+            {
+                alert(umsg);
+                $('#numTerminal').val(''); //reset text
+                $('#operadorCod').val(''); //reset text
+                $('#operadorSenha').val(''); //reset text
+                return;
+            } else if(erro === false){
+                alert(umsg);
+                location.href="../jogar/novojogo";
+            }
+
+
+        };
+
+
+        websocket.onerror	= function(ev){$('#message_box').append("<div class=\"system_error\">Error Occurred - "+ev.data+"</div>"); };
+        websocket.onclose 	= function(ev){$('#message_box').append("<div class=\"system_msg\">Connection Closed</div>");};
+    });
+</script>
+
+<!--Datepicker do JQueryUI-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<h1><?=$this->escapeHtml($this->title)?></h1>
+
+<p>
+    <!--<a href="<?=$this->urlAdd?>"><input name="submit" type="submit" value="Consultar"></a>-->
+    <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->urlAction);
+        $form->prepare();
+    ?>
+    <?=$this->form()->openTag($form)?>
+    <?=$this->formCollection($this->form)?>
+    <?=$this->form()->closeTag()?>
+
+</p>
