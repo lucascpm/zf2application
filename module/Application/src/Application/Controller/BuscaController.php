@@ -61,7 +61,12 @@ class BuscaController extends AbstractDoctrineCrudController
             $result = $this->getTipoJogo($codigoBusca);
         }
 
-        $valortotal = $em->getRepository('Cadastro\Model\TipoJogo')->findBy(array('aposta_valor_mult' => $valorJogo))[0];
+        /*$valortotal = $em->getRepository('Cadastro\Model\TipoJogo')->findBy(array('aposta_valor_mult' => $valorJogo))[0];
+        //procura o tipo, de acordo com o result(alteração do select)
+        $tamanhoInput = $this->getTamanhoInputPelaSigla($result);*/
+
+        $tipoJogo = $em->getRepository('Cadastro\Model\TipoJogo')->findOneBy(array('codigo' => $codigoBusca));
+        $valortotal = ($tipoJogo->divisor_valor_aposta) * $valorJogo;
         //procura o tipo, de acordo com o result(alteração do select)
         $tamanhoInput = $this->getTamanhoInputPelaSigla($result);
 

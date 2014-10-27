@@ -7,7 +7,6 @@ require_once 'vendor/pjb_etc/debug.php';
 
 use Cadastro\Model\Repository\ExtracaoProgramadaRepository;
 use Cadastro\Model\Repository\PuleRepository;
-use Cadastro\Model\Repository\TipoJogoRepository;
 use Doctrine\ORM\EntityManager;
 use Zend\Filter\Null;
 use Zend\Stdlib\DateTime;
@@ -39,11 +38,6 @@ class NovoJogoController extends AbstractDoctrineCrudController
      */
     protected $puleRepository;
 
-    /**
-     * @var TipoJogoRepository
-     */
-    protected $tipoJogoRepository;
-
     public function __construct()
     {
         $this->formClass = 'Jogar\Form\NovoJogoForm';
@@ -55,7 +49,6 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $this->label['no']	= 'Não';
 
         $this->em = $GLOBALS['entityManager'];
-        $this->tipoJogoRepository = $this->em->getRepository('Cadastro\Model\TipoJogo');
 //        $this->extracaoProgramadaRepository = $this->em->getRepository('Cadastro\Model\ExtracaoProgramada');
 //        $this->puleRepository = $this->em->getRepository('Cadastro\Model\Pule');
     }
@@ -82,20 +75,13 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $viewModel = new ViewModel();
 
         //Preenche os campos que serão mandados para a view
-        $pule = new Pule();
         $dadosPost = $this->getRequest()->getQuery();
         $qtdApostas = $dadosPost['qtd_jogos_hidden'];
         $numPule = $dadosPost['pule_0_hidden'];
-        $jogos = '';
+        $jogo = '';
         $linhaAtual = '';
-        $jogosAtual = '';
-        $jogosAnt = '';
-        $preenchimento = '';
-        $caracPreenc = '.';
-        $maxLinha = 33;
-        $tamanhoLinha = 0;
-        $valorTotalApostas = 0;
-        $separadorJogos = '<br/><br/>';
+        $maxLinha = 35;
+        $qtd_jogos = 0;
         for($i=0; $i<$qtdApostas; $i++){
             $qtd_jogos = $dadosPost['qtd_'.$i.'_hidden'];
             $tipojogo = $dadosPost['tipojogo_'.$i.'_hidden'];
@@ -103,34 +89,27 @@ class NovoJogoController extends AbstractDoctrineCrudController
             $valorjogo = $dadosPost['valorjogo_'.$i.'_hidden'];
             $valortotal = $dadosPost['valortotal_'.$i.'_hidden'];
             $extracao = $dadosPost['extracao_'.$i.'_hidden'];
-
             $viewModel->setVariable('qtd_jogos_'.$i.'_hidden', $qtd_jogos);
             $viewModel->setVariable('tipojogo_'.$i.'_hidden', $tipojogo);
             $viewModel->setVariable('premioini_'.$i.'_hidden', $premioini);
             $viewModel->setVariable('valorjogo_'.$i.'_hidden', $valorjogo);
             $viewModel->setVariable('valortotal_'.$i.'_hidden', $valortotal);
             $viewModel->setVariable('extracao_'.$i.'_hidden', $extracao);
+            //TODO continuar
 
-            $linhaAtual = $tipojogo . '<br/>' . $premioini . ' a ' . $valorjogo .  ' = ' . number_format($valortotal, 2, ',', '.') . '<br/>';
-            for($j=0; $j<$qtd_jogos; $j++){
-                $jogosAnt = $linhaAtual;
-                $linhaAtual .= $dadosPost['jogo_'.$i.'_'.$j] . ' ';
-                $tamanhoLinha = strlen($linhaAtual);
-                if($tamanhoLinha >= $maxLinha){
-                    $preenchimento = str_pad('', $maxLinha - strlen($jogosAnt), $caracPreenc);
-                    $jogosAtual .=  $jogosAnt . $preenchimento.'<br/>';
-                    $linhaAtual = $dadosPost['jogo_'.$i.'_'.$j] . ' ';
-                    $tamanhoLinha = strlen($linhaAtual);
-                }
-            }
-            $preenchimento = str_pad('', $maxLinha - $tamanhoLinha, $caracPreenc);
-            $jogosAtual .= $linhaAtual . $preenchimento; //preenche a última linha do jogo atual
-            $jogos .= $jogosAtual . $separadorJogos;
-            $jogosAtual = '';
-            $valorTotalApostas += $valortotal;
         }
-
-        $viewModel->setVariable('jogos', $jogos);
+        for($j=0; $j<$qtd_jogos; $j++){
+            $linhaAtual .= $dadosPost['jogo_'.$i.'_'.$j] . ' ';
+            if(strlen($linhaAtual)>=$maxLinha){
+                $jogo = str_pad($jogo, $maxLinha, '.'); //preenche a linha com .
+                $jogo .= '<br/>';
+                $linhaAtual = $dadosPost['jogo_'.$i.'_'.$j] . ' ';
+            }
+            else{
+                $jogo .= $linhaAtual;
+            }
+        }
+        $viewModel->setVariable('jogos', $jogo);
 
         $viewModel->setVariable('empresa', $GLOBALS['pjb_config']['empresa']);
         $viewModel->setVariable('operador', 'TESTE');
@@ -139,11 +118,10 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $viewModel->setVariable('tempoReclamacoes', 30);
         $viewModel->setVariable('qtd_apostas', $qtdApostas);
         $viewModel->setVariable('numPule', $numPule);
-        $viewModel->setVariable('maxLinha', $maxLinha);
-        $viewModel->setVariable('valorTotalApostas', $valorTotalApostas);
 
         return $viewModel;
     }
+
 }
 
 ?>

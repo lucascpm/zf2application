@@ -24,11 +24,6 @@ var escopo = ['01/05', '06/10', '01/10'];
 var premiosEscopo = 1;
 //TODO verificar o valor de cada tipo de jogo
 var valorTipoJogo = 2;
-var mascaraMoeda = "###.###.###.###,##";
-var prefixoMoeda = "";
-var mascaraData = "##/##/####";
-var mascaraHora = "##:##";
-
 /* Entra aqui quando for pressionada uma tecla em um campo com a classe teste */
 $('body').on('keydown', '.teste', function(e) {
     if (e.which == TECLA_CRIA_CAMPO_JOGO) {
@@ -166,12 +161,40 @@ $(document).ready(function(){
     });
 
     $("input[name='valorjogo']").keyup(function(){
-        $("input[name='valorjogo']").val(mascaraGenerica($("input[name='valorjogo']").val(),mascaraMoeda,true, prefixoMoeda));
+        //var tamanhoInput = $("input[name='valorjogo']").val().length;
+        //var textoInput = $("input[name='valorjogo']").val();
+        //if(tamanhoInput >= 3){
+        //Remove a vírgula, para saber o valor total em centavos
+        //textoInput = textoInput.replace(",", "");
+        //alert(textoInput);
+        //var reais = parseInt(textoInput/100);
+        //alert(reais);
+        //var centavos = textoInput.substr(-2);
+        //alert(textoInput.substring(tamanhoInput-2, tamanhoInput));
+        //$("input[name='valorjogo']").val(reais + ',' + centavos);
+        //Formata o campo de acordo com a máscara da moeda
+        //$("input[name='valorjogo']").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+        $("input[name='valorjogo']").val(Moeda($("input[name='valorjogo']").val(), ','));
+        $("input[name='valorjogo']").val(moedaMask($("input[name='valorjogo']").val(),"###.###.###,##",true, "R$ "));
         //Atualiza o valor do campo na tabela
         document.getElementById('valorjogo_'+codLinhaPule).innerText = document.getElementsByName('valorjogo')[0].value;
+        //}
+        //else if(tamanhoInput == 1)
+        //document.getElementById('valorjogo_'+codLinhaPule).innerText = "00,"+document.getElementsByName('valorjogo')[0].value;
+        //else if(tamanhoInput == 2)
+        //document.getElementById('valorjogo_'+codLinhaPule).innerText = "0,"+document.getElementsByName('valorjogo')[0].value;
         //Atualiza o valor total
         document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
     });
+
+//    /* Elemento genérico, altera o filho, de acordo com o valor selecionado do pai */
+//    $("select").change(function () {
+//        var elemento = this.name;
+//        if(elemento != 'tipojogo'){
+//            var texto = document.getElementsByName(elemento)[0].options[document.getElementsByName(elemento)[0].selectedIndex].innerText;
+//            document.getElementById(elemento+"_"+codLinhaPule).innerText = texto;
+//        }
+//    });
 
     $("input[name='premiofim']").change(function(){
         textoPremio = document.getElementsByName('premioini')[0].value + ' / ' + document.getElementsByName('premiofim')[0].value;
@@ -182,6 +205,11 @@ $(document).ready(function(){
     });
     $("input[name='valorjogo']").keypress(function(e){
         if (e.which == TECLA_CONFIRMA_APOSTA1 || e.which == TECLA_CONFIRMA_APOSTA2) {
+            //TODO corrigir id de cada linha
+            //Inserção de linhas na tabela
+            //novaLinha = $("tr.linhapule:last").clone();
+            //Evita conflitos
+            //novaLinha.removeClass('linhapule');
             var codProxLinha;
             codProxLinha = codLinhaPule+1;
             //Insere uma linha na tabela
@@ -197,11 +225,24 @@ $(document).ready(function(){
                     '<td><label id="excluir_' +codProxLinha +'"</label>x</td>'+
                     '</tr>'
             );
+            //insere a cópia depois do último tr(linha da tabela) com a classe linhapule
+//            novaLinha.insertAfter("tr.linhapule:last");
+//            var codLinhaAnt;
+//            codLinhaAnt = codLinhaPule;
+//            codLinhaPule++;
+//            novaLinha.addClass('cod_'+codLinhaPule);
+//            for(var i=0; i<idsCamposDaTabela.length; i++){
+//                //Altera o id da última linha da pule, para corrigir o valor de cada campo
+//                $("#"+idsCamposDaTabela[i]+codLinhaAnt+":last").prop("id", idsCamposDaTabela[i]+codLinhaPule);
+//                alert('Antes: ' + idsCamposDaTabela[i]+codLinhaAnt + '\nDepois: ' + idsCamposDaTabela[i]+codLinhaPule);
+//            }
             //procura e copia cada elemento
             //Ao chegar aqui, os dois últimos inputs estão com id igual, o id do último é corrigido
             //TODO Criar um elemento hidden para cada campo
             var tipoElemento;
             for(var i=0; i < idsCamposDaTabela.length; i++){
+//                alert('campo inserido: ' + idsCamposDaTabela[i]+codLinhaPule+"_hidden" +
+//                    '\nvalor: ' + document.getElementById(idsCamposDaTabela[i]+codLinhaPule).innerText);
                 novoCampo = $("input[name='valorjogo']").clone();
                 //insere o campo hidden dentro do form
                 novoCampo.insertAfter("input[name='valorjogo']");
@@ -346,6 +387,139 @@ function atualizaValorTotal(){
     return parseFloat(((document.getElementsByName('valorjogo')[0].value.replace(',','.'))*premiosEscopo*(qtdJogos)*(valorTipoJogo))).toFixed(2);
 }
 
+/*
+ * Função: Moeda
+ * Descrição: Formata o valor para o formato de moeda e retorna o novo valor
+ * Parâmetros:
+ *      valor: O texto do input, por exemplo
+ *      separadorCentavos: O caractere usado para separar os reais dos centavos
+ * Retorno:  O valor no formato de moeda
+ *
+ */
+function Moeda(valor, sepadorCentavos){
+    var valorMascara;
+    var strReais = "";
+    var reaisFormatado;
+    var pontosAdicionados = 0;
+    //Retira tudo o que não for dígito do texto do input
+    var textoInput = valor.replace(/[^\d]+/g,'');
+    var tamanhoInput = valor.length;
+    if(tamanhoInput >= 3){
+        //Remove a vírgula, para saber o valor total em centavos
+        //textoInput = textoInput.replace(sepadorCentavos, "");
+        var reais = parseInt(textoInput/100);
+        //strReais = reais.ToCharArray();
+        /*var qtdPontos = (tamanhoInput-1)/3;
+        var i = tamanhoInput+qtdPontos;
+        while(pontosAdicionados< qtdPontos){
+            for(j=0; j<3; j++){
+                reaisFormatado[i] = strReais[i-qtdPontos];
+                i--;
+            }
+            reaisFormatado[i--] = ".";
+            pontosAdicionados++;
+        }*/
+        //strReais = reaisFormatado.toString().replace(',','');
+        var centavos = textoInput.substr(-2);
+        //valorMascara = strReais + sepadorCentavos + centavos;
+        valorMascara = reais + sepadorCentavos + centavos;
+    }
+    else if(tamanhoInput == 1)
+        valorMascara = "00" + sepadorCentavos + valor;
+    else if(tamanhoInput == 2)
+        valorMascara = "0" + sepadorCentavos + valor;
+
+    return valorMascara;
+}
+///////////
+
+//-----------------------------------------------------
+//Funcao: MascaraMoeda
+//Sinopse: Mascara de preenchimento de moeda
+//Parametro:
+//   objTextBox : Objeto (TextBox)
+//   SeparadorMilesimo : Caracter separador de milésimos
+//   SeparadorDecimal : Caracter separador de decimais
+//   e : Evento
+//Retorno: Booleano
+//Autor: Gabriel Fróes - www.codigofonte.com.br
+function MascaraMoeda(objTextBox, SeparadorMilesimo, SeparadorDecimal, e){
+    var sep = 0;
+    var key = '';
+    var i = j = 0;
+    var len = len2 = 0;
+    var strCheck = '0123456789';
+    var aux = aux2 = '';
+    var whichCode = (window.Event) ? e.which : e.keyCode;
+    if (whichCode == 13) return true;
+    key = String.fromCharCode(whichCode); // Valor para o código da Chave
+    if (strCheck.indexOf(key) == -1) return false; // Chave inválida
+    len = objTextBox.value.length;
+    for(i = 0; i < len; i++)
+        if ((objTextBox.value.charAt(i) != '0') && (objTextBox.value.charAt(i) != SeparadorDecimal)) break;
+    aux = '';
+    for(; i < len; i++)
+        if (strCheck.indexOf(objTextBox.value.charAt(i))!=-1) aux += objTextBox.value.charAt(i);
+    aux += key;
+    len = aux.length;
+    if (len == 0) objTextBox.value = '';
+    if (len == 1) objTextBox.value = '0'+ SeparadorDecimal + '0' + aux;
+    if (len == 2) objTextBox.value = '0'+ SeparadorDecimal + aux;
+    if (len > 2) {
+        aux2 = '';
+        for (j = 0, i = len - 3; i >= 0; i--) {
+            if (j == 3) {
+                aux2 += SeparadorMilesimo;
+                j = 0;
+            }
+            aux2 += aux.charAt(i);
+            j++;
+        }
+        objTextBox.value = '';
+        len2 = aux2.length;
+        for (i = len2 - 1; i >= 0; i--)
+            objTextBox.value += aux2.charAt(i);
+        objTextBox.value += SeparadorDecimal + aux.substr(len - 2, len);
+    }
+    return false;
+}
+
+function inverte(str){
+    return str.split('').reverse().join('');
+}
+
+function maskIt(w,e,m,r,a){
+    // Cancela se o evento for Backspace
+    if (!e) {
+        var e = window.event;
+    }
+    if (e.keyCode) {
+        code = e.keyCode;
+    }
+    else if (e.which) {
+        code = e.which;
+    }
+    // Variáveis da função
+    var txt  = (!r) ? w.value.replace(/[^\d]+/gi,'') : w.value.replace(/[^\d]+/gi,'').reverse();
+    var mask = (!r) ? m : m.reverse();
+    var pre  = (a ) ? a.pre : "";
+    var pos  = (a ) ? a.pos : "";
+    var ret  = "";
+    if(code == 9 || code == 8 || txt.length == mask.replace(/[^#]+/g,'').length) {
+        return false;
+    }
+    // Loop na máscara para aplicar os caracteres
+    for(var x=0,y=0, z=mask.length;x<z && y<txt.length;){
+        if(mask.charAt(x)!='#'){
+            ret += mask.charAt(x); x++; }
+        else {
+            ret += txt.charAt(y); y++; x++; }
+    }
+    // Retorno da função
+    ret = (!r) ? ret : ret.reverse();
+    w.value = pre+ret+pos;
+}
+
 /* http://forum.imasters.com.br/topic/344232-resolvidoclculo-e-resultado-no-formato-moeda-em-javascript/ */
 function moedaMask(valor,m,r,prefixo, sufixo){
     // Variáveis da função
@@ -367,34 +541,7 @@ function moedaMask(valor,m,r,prefixo, sufixo){
     return pre+ret+pos;
 }
 
-function mascaraGenerica(valor,m,r,prefixo, sufixo){
-    // Variáveis da função
-    var txt  = (!r) ? valor.replace(/[^\d]+/gi,'') : valor.replace(/[^\d]+/gi,'').reverse();
-    var mask = (!r) ? m : m.reverse();
-    var pre  = (prefixo ) ? prefixo : "";
-    var pos  = (sufixo ) ? sufixo : "";
-    var ret  = "";
-    // Loop na máscara para aplicar os caracteres
-    for(var x=0,y=0, z=mask.length;x<z && y<txt.length;){
-        if(mask.charAt(x)!='#'){
-            ret += mask.charAt(x); x++; }
-        else {
-            ret += txt.charAt(y); y++; x++; }
-    }
-    // Retorno da função
-    ret = (!r) ? ret : ret.reverse();
-    return pre+ret+pos;
-}
-
 // Novo método para o objeto 'String'
 String.prototype.reverse = function(){
     return this.split('').reverse().join('');
 };
-
-function habilitaDesabilitaInput(nomeInput, valorCheckBox){
-    document.getElementsByName(nomeInput)[0].disabled = true;
-    //se o checkbox está marcado
-    if(valorCheckBox == true){
-        document.getElementsByName(nomeInput)[0].disabled = false;
-    }
-}

@@ -1,7 +1,7 @@
 <?php
 require_once 'vendor/MPDF53/mpdf.php';
 
-$valorTotalApostas = $this->valorTotalApostas;
+$valorTotalApostas = 0;
 $qtdApostas = $this->qtd_apostas;
 $numPule = $this->numPule;
 $extracao = $this->extracao_0_hidden;
@@ -11,14 +11,10 @@ $data = $this->data;
 $tempoReclamacoes = $this->tempoReclamacoes;
 $empresa = $this->empresa;
 $jogos = $this->jogos;
-$apostas = $this->apostas;
-$maxLinha = $this->maxLinha;
-$strAposta = str_pad(' APOSTAS ', $maxLinha, '-', STR_PAD_BOTH);
-$linhaPreenchida = str_pad('', $maxLinha, '.', STR_PAD_BOTH);
 
 $apostas = '';
 
-/*for($i=0; $i<$qtdApostas; $i++){
+for($i=0; $i<$qtdApostas; $i++){
     $qtd_jogos = $this->{ 'qtd_jogos_'.$i.'_hidden' };
     $tipojogo  = $this->{ 'tipojogo_'.$i.'_hidden' };
     $premioini = $this->{ 'premioini_'.$i.'_hidden' };
@@ -26,20 +22,20 @@ $apostas = '';
     $valortotal = $this->{ 'valortotal_'.$i.'_hidden' };
     $valorTotalApostas += $valortotal;
     $apostas .= $tipojogo . '<br/>';
+    /*for($j=0; $j<$qtd_jogos; $j++){
+        $jogo = $this->{ 'jogo_'.$i.'_'.$j };
+        $apostas .= $jogo . ' ';
+    }*/
+    $apostas .= $jogos;
     $apostas .= '<br/>' . $premioini . ' a ' . $valorjogo .  ' = ' . number_format($valortotal, 2, ',', '.') . ' <br/>';
-    $apostas .= '<br/>LINHA ' . $this->{ 'linha_'.$i } . ' <br/>';
-}*/
+}
+$apostas .= '<h4> ............................................................. </h4>';
 
 
 $html = '
 
 <head>
-	<link rel="stylesheet" href="/terminal-web/public/css/style.css">
-	<style>
-	body {
-        font-family: "Courier New", "Monaco", "monospace";
-    }
-    </style>
+	<link rel="stylesheet" href="/pjb/public/css/style.css">
 </head>
 <div class="boletim" >
 
@@ -48,16 +44,27 @@ $html = '
 <h4>Extração: '.$extracao.'</h4>
 <h4>Data: '.formata($data, "d/m/Y H:i").'</h4>
 <h4>Oper:'.$operador.'  Term:'. $terminal .'</h4>
-<h4>' . $strAposta .'</h4>
-<h4> '. $jogos .'  </h4>
+<h4> --------------- APOSTAS --------------- </h4>
+<h4> '. $apostas .'  </h4>
 <h4> TOTAL: R$ '. number_format($valorTotalApostas, 2, ',', '.'). '  </h4>
-<h4> ' .$linhaPreenchida. ' </h4>
+<h4> ............................................................. </h4>
 <h4> Reclamações: '.$tempoReclamacoes .' dias</h4>
-<h4> ' .$linhaPreenchida. ' </h4>
+<h4> ............................................................. </h4>
 <h4>'. $terminal .' '. $numPule.'</h4>
-<h4> ' .$linhaPreenchida. ' </h4>
+<h4> =========================== </h4>
 
-<br />';
+<br />
+<table>
+        <tr>Pule</tr>
+        <tr>Extração</tr>
+        <tr>Dia: </tr>
+        <tr>Oper: TESTE   Term: </tr>
+        <tr>------ APOSTAS ------</tr>
+        <tr>------ APOSTAS ------</tr>
+        <tr>TOTAL: R$ </tr>
+</table>';
+
+
 
         //==============================================================
 
