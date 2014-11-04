@@ -61,6 +61,8 @@ class NovoJogoController extends AbstractDoctrineCrudController
     }
 
     public function indexAction() {
+        $dadosPost = $this->getRequest()->getQuery();
+        $imprimir = $dadosPost['imprimir'];
         $viewModel = new ViewModel();
 
         $auth = new AuthenticationService();
@@ -72,10 +74,16 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $viewModel->setVariable('extracoes', $this->em->getRepository('Cadastro\Model\Extracao')->findAll());
 
         //TODO Vou precisar da Action??
-        $action = $this->url()->fromRoute($this->route, array('action' => 'gerarPdf'));
-        $viewModel->setVariable('urlAction', $action);
+        if(isset($imprimir)){
+            $action = $this->url()->fromRoute($this->route, array('action' => 'gerarPdf'));
+            $viewModel->setVariable('urlAction', $action);
+            return $viewModel;
+        }
+        if($this->request->isGet()){
+            return $viewModel;
+        }
 
-        return $viewModel;
+
     }
 
     public function gerarPdfAction() {

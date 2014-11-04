@@ -46,7 +46,7 @@ $('body').on('keydown', '.teste', function(e) {
         //verifica se é milhar invertida
         if(document.getElementById('jogo_0').maxLength == 12)
             $(".teste").attr("maxlength", document.getElementById('jogo_0').value.length);
-        document.getElementById('qtd_'+codLinhaPule).innerHTML = qtdJogos;
+        document.getElementById('qtd_'+codLinhaPule).innerText = qtdJogos;
         //permite que o campo adicionado obtenha o foco
         $('#qtd').focus();
         $('#qtd').val(qtdJogos);
@@ -84,9 +84,9 @@ $(document).ready(function(){
     catch (e) {
         alert('Não há extrações cadastradas para hoje\nCadastre uma Extração');
     }
-    document.getElementById('pule_0').innerHTML = document.getElementById('numPule').innerHTML;
+    document.getElementById('pule_0').innerText = document.getElementById('numPule').innerText;
     textoPremio = document.getElementsByName('premioini')[0].value;// + ' - ' + document.getElementsByName('premiofim')[0].value;
-    document.getElementById('premio_'+codLinhaPule).innerHTML = textoPremio;
+    document.getElementById('premio_'+codLinhaPule).innerText = textoPremio;
 
     //adiciona a classe teste ao elemento com id jogo_0 para poder manipulá-lo
     //e manipular também os que forem criados
@@ -107,9 +107,9 @@ $(document).ready(function(){
         }
         qtdJogos=1;
         $('#qtd').val(qtdJogos);
-        document.getElementById('qtd_'+(qtdJogos-1)).innerHTML = qtdJogos;
+        document.getElementById('qtd_'+(qtdJogos-1)).innerText = qtdJogos;
         valorTipoJogo = valores[(document.getElementsByName("tipojogo")[0]['value'])-1];
-        document.getElementById('valortotal_'+codLinhaPule).innerHTML = atualizaValorTotal();
+        document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
     });
 
     $("input[name='premioini']").keyup(function(){
@@ -121,10 +121,10 @@ $(document).ready(function(){
             case 1:
                 if(textoInput <= escopo.length && textoInput > 0){
                     document.getElementById("premio_"+codLinhaPule).innerHTML = escopo[textoInput- 1];
-                    premioini = document.getElementById('premio_'+codLinhaPule).innerHTML.substring(0, 2);
-                    premiofim = document.getElementById('premio_'+codLinhaPule).innerHTML.substring(3, 5);
+                    premioini = document.getElementById('premio_'+codLinhaPule).innerText.substring(0, 2);
+                    premiofim = document.getElementById('premio_'+codLinhaPule).innerText.substring(3, 5);
                     premiosEscopo = premiofim - premioini + 1;
-                    document.getElementById('valortotal_'+codLinhaPule).innerHTML = atualizaValorTotal();
+                    document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
                 }
                 return;
             case 2:
@@ -143,9 +143,9 @@ $(document).ready(function(){
                 }
                 break;
         }
-        document.getElementById('premio_'+codLinhaPule).innerHTML = $("input[name='premioini']").val();
+        document.getElementById('premio_'+codLinhaPule).innerText = $("input[name='premioini']").val();
         premiosEscopo = premiofim - premioini + 1;
-        document.getElementById('valortotal_'+codLinhaPule).innerHTML = atualizaValorTotal();
+        document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
     });
 
     $("input[name='valorjogo']").keypress(function(e){
@@ -163,24 +163,24 @@ $(document).ready(function(){
                     '<label class="totalizador">T</label>'
                 );
             }
-            document.getElementById('valortotal_'+codLinhaPule).innerHTML = atualizaValorTotal();
+            document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
         }
     });
 
     $("input[name='valorjogo']").keyup(function(){
         $("input[name='valorjogo']").val(mascaraGenerica($("input[name='valorjogo']").val(),mascaraMoeda,true, prefixoMoeda));
         //Atualiza o valor do campo na tabela
-        document.getElementById('valorjogo_'+codLinhaPule).innerHTML = document.getElementsByName('valorjogo')[0].value;
+        document.getElementById('valorjogo_'+codLinhaPule).innerText = document.getElementsByName('valorjogo')[0].value;
         //Atualiza o valor total
-        document.getElementById('valortotal_'+codLinhaPule).innerHTML = atualizaValorTotal();
+        document.getElementById('valortotal_'+codLinhaPule).innerText = atualizaValorTotal();
     });
 
     $("input[name='premiofim']").change(function(){
         textoPremio = document.getElementsByName('premioini')[0].value + ' / ' + document.getElementsByName('premiofim')[0].value;
-        document.getElementById('premio_'+codLinhaPule).innerHTML = textoPremio;
+        document.getElementById('premio_'+codLinhaPule).innerText = textoPremio;
     });
     $("input[name='valorjogo']").change(function(){
-        document.getElementById('valorjogo_'+codLinhaPule).innerHTML = document.getElementsByName('valorjogo')[0].value;
+        document.getElementById('valorjogo_'+codLinhaPule).innerText = document.getElementsByName('valorjogo')[0].value;
     });
     $("input[name='valorjogo']").keypress(function(e){
         if (e.which == TECLA_CONFIRMA_APOSTA1 || e.which == TECLA_CONFIRMA_APOSTA2) {
@@ -189,13 +189,13 @@ $(document).ready(function(){
             //Insere uma linha na tabela
             $('table:last').append(
                 '<tr class="linhapule">'+
-                    '<td><label id="'+ idsCamposDaTabela[0]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[0]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[1]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[1]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[2]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[2]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[3]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[3]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[4]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[4]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[5]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[5]+codLinhaPule).innerHTML+'</td>'+
-                    '<td><label id="'+ idsCamposDaTabela[6]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[6]+codLinhaPule).innerHTML+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[0]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[0]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[1]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[1]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[2]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[2]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[3]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[3]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[4]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[4]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[5]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[5]+codLinhaPule).innerText+'</td>'+
+                    '<td><label id="'+ idsCamposDaTabela[6]+codProxLinha +'"</label>'+document.getElementById(idsCamposDaTabela[6]+codLinhaPule).innerText+'</td>'+
                     '<td><label id="excluir_' +codProxLinha +'"</label>x</td>'+
                     '</tr>'
             );
@@ -207,12 +207,12 @@ $(document).ready(function(){
                 novoCampo = $("input[name='valorjogo']").clone();
                 //insere o campo hidden dentro do form
                 novoCampo.insertAfter("input[name='valorjogo']");
-                novoCampo.prop('id', idsCamposDaTabela[i]+"_hidden"+codLinhaPule);
-                novoCampo.prop('name', idsCamposDaTabela[i]+"_hidden"+codLinhaPule);
+                novoCampo.prop('id', idsCamposDaTabela[i]+codLinhaPule+"_hidden");
+                novoCampo.prop('name', idsCamposDaTabela[i]+codLinhaPule+"_hidden");
                 novoCampo.prop('type', "hidden");
                 tipoElemento = document.getElementById(idsCamposDaTabela[i]);
                 try{
-                    novoCampo.prop('value', document.getElementById(idsCamposDaTabela[i]+codLinhaPule).innerHTML);
+                    novoCampo.prop('value', document.getElementById(idsCamposDaTabela[i]+codLinhaPule).innerText);
                 }
                 catch (e){
                     console.log(e);
@@ -244,7 +244,7 @@ $(document).ready(function(){
             qtdJogos = 1;
             $('#qtd').val(qtdJogos);
             $('#qtd_jogos_hidden').val(codLinhaPule);
-            document.getElementById('qtd_'+codLinhaPule).innerHTML = qtdJogos;
+            document.getElementById('qtd_'+codLinhaPule).innerText = qtdJogos;
             document.getElementsByName('tipojogo')[0].focus();
         }
     });
@@ -252,8 +252,8 @@ $(document).ready(function(){
 });
 
 function setaTextoElementoTabela(nomeElementoPai, idElementoFilho){
-    texto = document.getElementsByName(nomeElementoPai)[0].options[document.getElementsByName(nomeElementoPai)[0].selectedIndex].innerHTML;
-    document.getElementById(idElementoFilho).innerHTML = texto;
+    texto = document.getElementsByName(nomeElementoPai)[0].options[document.getElementsByName(nomeElementoPai)[0].selectedIndex].innerText;
+    document.getElementById(idElementoFilho).innerText = texto;
 }
 
 /* Coloca na label a sigla correspondente ao tipo de jogo */
@@ -267,8 +267,8 @@ function setaTexto(valueSelect) {
             var valortotal;
             tamInputs = sel.substring(sel.search("<tamanho>")+9, sel.search("</tamanho>"));
             sel = sel.substring(sel.search("<response>")+10, sel.search("</response>"));
-            document.getElementById('siglajogos').innerHTML = sel;
-            document.getElementById('tipojogo_'+codLinhaPule).innerHTML = sel;
+            document.getElementById('siglajogos').innerText = sel;
+            document.getElementById('tipojogo_'+codLinhaPule).innerText = sel;
             $(".teste").attr("maxlength", tamInputs);
             $(".teste").attr("minlength", tamInputs);
             //$(".teste").attr("pattern", '^\d{'+tamInputs+'}');
@@ -313,10 +313,10 @@ function pesquisaEAlteraCampos(arrNomesVariaveisGet, arrValoresVariaveisGet, arr
             }
             for(i=0; i<arrBy.length; i++){
                 if(arrBy[i].toLowerCase() == 'id'){
-                    document.getElementById(arrElementos[i]).innerHTML = conteudosTags[i];
+                    document.getElementById(arrElementos[i]).innerText = conteudosTags[i];
                 }
                 else if(arrBy[i].toLowerCase() == 'name'){
-                    document.getElementsByName(arrElementos[i])[0].innerHTML = conteudosTags[i];
+                    document.getElementsByName(arrElementos[i])[0].innerText = conteudosTags[i];
                 }
                 else if(arrBy[i].toLowerCase() == 'attr'){
                     $(arrIdOuClasse[i]).attr(arrAtributoElementos[i], conteudosTags[i]);

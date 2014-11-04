@@ -70,7 +70,7 @@ class NovoJogoForm extends AbstractForm
 
         $this->addElement('premioini', 'text', 'Prêmio: ', array('maxlength' => 5));
         $this->addElement('premiofim', 'text', ' / ', array('value' => '10'));
-        $this->addElement('valorjogo', 'text', 'Valor do Jogo: ', array('onkeydown' => 'criaLinhaTabelaPadrao(event)', 'value' => '20,00'));
+        $this->addElement('valorjogo', 'text', 'Valor do Jogo: ', array('value' => '20,00'));
 
 
         $this->addElement('submit', 'submit', 'Imprimir', array(), "imprimir");
