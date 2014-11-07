@@ -74,16 +74,10 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $viewModel->setVariable('extracoes', $this->em->getRepository('Cadastro\Model\Extracao')->findAll());
 
         //TODO Vou precisar da Action??
-        if(isset($imprimir)){
-            $action = $this->url()->fromRoute($this->route, array('action' => 'gerarPdf'));
-            $viewModel->setVariable('urlAction', $action);
-            return $viewModel;
-        }
-        if($this->request->isGet()){
-            return $viewModel;
-        }
+        $action = $this->url()->fromRoute($this->route, array('action' => 'gerarPdf'));
+        $viewModel->setVariable('urlAction', $action);
 
-
+        return $viewModel;
     }
 
     public function gerarPdfAction() {
@@ -93,7 +87,7 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $pule = new Pule();
         $dadosPost = $this->getRequest()->getQuery();
         $qtdApostas = $dadosPost['qtd_jogos_hidden'];
-        $numPule = $dadosPost['pule_0_hidden'];
+        $numPule = $dadosPost['pule_hidden_0'];
         $jogos = '';
         $linhaAtual = '';
         $jogosAtual = '';
@@ -105,19 +99,19 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $valorTotalApostas = 0;
         $separadorJogos = '<br/><br/>';
         for($i=0; $i<$qtdApostas; $i++){
-            $qtd_jogos = $dadosPost['qtd_'.$i.'_hidden'];
-            $tipojogo = $dadosPost['tipojogo_'.$i.'_hidden'];
-            $premioini = $dadosPost['premio_'.$i.'_hidden'];
-            $valorjogo = $dadosPost['valorjogo_'.$i.'_hidden'];
-            $valortotal = $dadosPost['valortotal_'.$i.'_hidden'];
-            $extracao = $dadosPost['extracao_'.$i.'_hidden'];
+            $qtd_jogos = $dadosPost['qtd_hidden_'.$i];
+            $tipojogo = $dadosPost['tipojogo_hidden_'.$i];
+            $premioini = $dadosPost['premio_hidden_'.$i];
+            $valorjogo = $dadosPost['valorjogo_hidden_'.$i];
+            $valortotal = $dadosPost['valortotal_hidden_'.$i];
+            $extracao = $dadosPost['extracao_hidden_'.$i];
 
-            $viewModel->setVariable('qtd_jogos_'.$i.'_hidden', $qtd_jogos);
-            $viewModel->setVariable('tipojogo_'.$i.'_hidden', $tipojogo);
-            $viewModel->setVariable('premioini_'.$i.'_hidden', $premioini);
-            $viewModel->setVariable('valorjogo_'.$i.'_hidden', $valorjogo);
-            $viewModel->setVariable('valortotal_'.$i.'_hidden', $valortotal);
-            $viewModel->setVariable('extracao_'.$i.'_hidden', $extracao);
+            $viewModel->setVariable('qtd_jogos_hidden_'.$i, $qtd_jogos);
+            $viewModel->setVariable('tipojogo_hidden_'.$i, $tipojogo);
+            $viewModel->setVariable('premioini_hidden_'.$i, $premioini);
+            $viewModel->setVariable('valorjogo_hidden_'.$i, $valorjogo);
+            $viewModel->setVariable('valortotal_hidden_'.$i, $valortotal);
+            $viewModel->setVariable('extracao_hidden_'.$i, $extracao);
 
             $linhaAtual = $tipojogo . '<br/>' . $premioini . ' a ' . $valorjogo .  ' = ' . number_format($valortotal, 2, ',', '.') . '<br/>';
             for($j=0; $j<$qtd_jogos; $j++){

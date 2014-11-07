@@ -20,15 +20,15 @@ function criaLinhaTabelaPadrao(evt){
         'tag:label;id:premio_',
         'tag:label;id:valorjogo_',
         'tag:label;id:valortotal_',
-        'tag:input;type:button;id:excluir_;onclick:RemoveTableRow(this,event);value:Excluir',
+        'tag:input;type:button;id:excluir_;onclick:RemoveTableRow(this,event), atualizaTotalApostas(-1);value:Excluir',
         //Campos hidden
-        'tag:input;type:hidden;id:pule_hidden_',
-        'tag:input;type:hidden;id:extracao_hidden_',
-        'tag:input;type:hidden;id:tipojogo_hidden_',
-        'tag:input;type:hidden;id:qtd_hidden_',
-        'tag:input;type:hidden;id:premio_hidden_',
-        'tag:input;type:hidden;id:valorjogo_hidden_',
-        'tag:input;type:hidden;id:valortotal_hidden_'
+        'tag:input;type:hidden;id:pule_hidden_;name:pule_hidden_',
+        'tag:input;type:hidden;id:extracao_hidden_;name:extracao_hidden_',
+        'tag:input;type:hidden;id:tipojogo_hidden_;name:tipojogo_hidden_',
+        'tag:input;type:hidden;id:qtd_hidden_;name:qtd_hidden_',
+        'tag:input;type:hidden;id:premio_hidden_;name:premio_hidden_',
+        'tag:input;type:hidden;id:valorjogo_hidden_;name:valorjogo_hidden_',
+        'tag:input;type:hidden;id:valortotal_hidden_;name:valortotal_hidden_'
     );
 
     strTable += '</tr>';
@@ -56,7 +56,7 @@ function criaLinhaTabela(){
                 valorEntreTags = argumentoAtual[j].split(':')[1];
             }
             else{
-                if(argumentoAtual[j].split(':')[0] == 'id'){
+                if(argumentoAtual[j].split(':')[0] == 'id' || argumentoAtual[j].split(':')[0] == 'name'){
                     strTable += argumentoAtual[j].split(':')[0] + '=\"' + argumentoAtual[j].split(':')[1] + ID_LINHA + '\"';
                 } else{
                     strTable += argumentoAtual[j].split(':')[0] + '=\"' + argumentoAtual[j].split(':')[1] + '\"';
