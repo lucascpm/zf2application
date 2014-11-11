@@ -6,21 +6,19 @@ require_once 'vendor/pjb_etc/funcoes.php';
 require_once 'vendor/pjb_etc/debug.php';
 
 use Cadastro\Model\Repository\ExtracaoProgramadaRepository;
+use Cadastro\Model\ExtracaoProgramada;
 use Cadastro\Model\Repository\PuleRepository;
 use Cadastro\Model\Repository\TipoJogoRepository;
 use Doctrine\ORM\EntityManager;
-use Zend\Filter\Null;
 use Zend\Stdlib\DateTime;
-use Zend\Form\Element\Submit;
-use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Abstrato\Mvc\Controller\AbstractDoctrineCrudController;
-use Zend\Form\Element\Hidden;
 
 use Relatorio\Form\ApostaLsForm;
 use Cadastro\Model\Pule;
 use Cadastro\Model\Aposta;
+use Cadastro\Model\Terminal;
 
 class NovoJogoController extends AbstractDoctrineCrudController
 {
@@ -39,6 +37,7 @@ class NovoJogoController extends AbstractDoctrineCrudController
      */
     protected $puleRepository;
 
+
     /**
      * @var TipoJogoRepository
      */
@@ -47,7 +46,7 @@ class NovoJogoController extends AbstractDoctrineCrudController
     public function __construct()
     {
         $this->formClass = 'Jogar\Form\NovoJogoForm';
-//        $this->modelClass = 'Cadastro\Model\Pule';
+        //$this->modelClass = 'Cadastro\Model\Pule';
 //        $this->namespaceTableGateway = 'Cadastro\Model\Aposta';
         $this->route = 'novojogo';
         $this->title = 'Novo Jogo';
@@ -74,14 +73,78 @@ class NovoJogoController extends AbstractDoctrineCrudController
         $viewModel->setVariable('extracoes', $this->em->getRepository('Cadastro\Model\Extracao')->findAll());
 
         //TODO Vou precisar da Action??
-        $action = $this->url()->fromRoute($this->route, array('action' => 'gerarPdf'));
-        $viewModel->setVariable('urlAction', $action);
+        $action = $this->url()->fromRoute($this->route, array('action' => 'jogar'));
 
+        if(isset($dadosReq['imprimir']))
+            die(var_dump("foi pdf"));
+
+
+        if($this->request->isPost()) {
+        }
+
+        $viewModel->setVariable('urlAction', $action);
         return $viewModel;
+
+
+    }
+
+    public function jogarAction() {
+        //Preenche os campos que serão mandados para a view
+        $dadosPost = $this->getRequest()->getQuery();
+
+        $pule = new Pule();
+        $apostas = array();
+        $extracao = $dadosPost['extracao_hidden_0'];
+        $extracaoProgramada = $this->em->getRepository('Cadastro\Model\ExtracaoProgramada')->findOneBy(array('id'=> 50));
+        $qtdApostas = $dadosPost['qtd_jogos_hidden'];
+        $numPule = $dadosPost['pule_hidden_0'];
+        $valorTotalApostas = 0;
+
+
+
+        //Criando Pule
+        $terminal = $this->em->getRepository('Cadastro\Model\Terminal')->findOneBy(array('serial'=> 18529822345));
+
+        for($i=0; $i<$qtdApostas; $i++){
+            $qtd_jogos = $dadosPost['qtd_hidden_'.$i];
+            $tipoJogoId = $dadosPost['tipojogo_hidden_'.$i];
+            $premioini = $dadosPost['premio_hidden_'.$i];
+            $valorjogo = $dadosPost['valorjogo_hidden_'.$i];
+            $valortotal = $dadosPost['valortotal_hidden_'.$i];
+
+            //Criando apostas
+//            $tipoJogo = $this->em->getRepository('Cadastro\Model\TipoJogo')->findOneBy(array('codigo'=>$tipoJogoId));
+            $tipoJogo = $this->em->getRepository('Cadastro\Model\TipoJogo')->findOneBy(array('codigo'=>1));
+            $escopo = $this->em->getRepository('Cadastro\Model\EscopoPremio')->findOneBy(array('codigo'=>1));
+
+            for($j=0; $j<$qtd_jogos; $j++){
+                $apostas[] = new Aposta($pule, $tipoJogo, $escopo, $dadosPost['jogo_'.$i.'_'.$j], $valorjogo);
+            }
+
+
+//            $valorTotalApostas += $valortotal;
+
+        }
+
+        //die(var_dump($dadosPost));
+
+
+
+        //TODO COMO CHAMAR AS FUNÇÕES DO PULE REPOSITORY ??
+        $pule = new Pule($terminal->getProxNumeroPule(), $terminal, $extracaoProgramada);
+        $pule->apostas = $apostas;
+        //$this->puleRepository = new PuleRepository($this->em, \Cadastro\);
+        $this->puleRepository->novaPule($pule);
+
+        return $this->redirect()->toRoute($this->route, array('action'=>'index'));
+
     }
 
     public function gerarPdfAction() {
         $viewModel = new ViewModel();
+
+        $dadosPost = $this->getRequest()->getQuery();
+        die(var_dump($dadosPost));
 
         //Preenche os campos que serão mandados para a view
         $pule = new Pule();

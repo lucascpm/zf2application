@@ -84,13 +84,7 @@ class NovoJogoForm extends AbstractForm
 
         $this->add($imprimir);
 
-        $button = new Element\Button('jogar');
-        $button->setLabel('Jogar')
-            ->setValue('Jogar')
-            ->setAttribute('id','jogar')
-            ->setAttribute('required',false);
-
-        $this->add($button);
+        $this->addElement('jogar', 'submit', 'Jogar');
 
 	}
 
